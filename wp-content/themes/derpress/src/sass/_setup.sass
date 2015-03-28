@@ -1,0 +1,92 @@
+///// Color Guide /////
+
+// $color: #hexcode
+
+///// Font Setup /////
+// **** Use something like this...
+// $sans-serif-fallback:  "arial", "verdana", "sans-serif"
+// $serif-fallback:       "helvetica", "tahoma", "serif"
+
+// Gotham
+// =gotham($weight: "")
+//   font-style: normal
+//   @if $weight == "medium"
+//     font-family: "Gotham 5r", "Gotham A", "Gotham B", $sans-serif-fallback
+//     font-weight: 500
+//   @else
+//     font-family: "Gotham 4r", "Gotham A", "Gotham B", $sans-serif-fallback
+//     font-weight: 400
+
+// Freight
+// =freight($style: "")
+//   font-family: "freight-text-pro", $serif-fallback
+//   font-weight: 500
+//   @if $style == "italic"
+//     font-style: italic
+//   @else
+//     font-style: normal
+
+
+///// Sprites & Retina /////
+// **** Uncomment for (retina) sprites
+// $icons: sprite-map("icons/*.png", $spacing: 20px)
+// $icons2x: sprite-map("icons-retina/*.png", $spacing: 40px)
+
+// Normal sprite
+@mixin sprite($name)
+  @include retina-sprite($name, $icons, $icons2x)
+
+// Retina sprite
+@mixin retina-sprite($name, $sprites, $sprites2x, $dimensions: true, $pad: 0)
+  @if $dimensions == true
+    +sprite-dimensions($sprites, $name)
+
+  background-image: sprite-url($sprites)
+  background-position: sprite-position($sprites, $name, -$pad, -$pad)
+  background-repeat: no-repeat
+
+  @if $pad > 0
+    padding: $pad
+
+  @media (-webkit-min-device-pixel-ratio: 2), (min--moz-device-pixel-ratio: 2), (-o-min-device-pixel-ratio: 3/2), (min-device-pixel-ratio: 2)
+    &
+      $pos: sprite-position($sprites2x, $name, -$pad*2, -$pad*2)
+      background-image: sprite-url($sprites2x)
+      background-position: nth($pos, 1) nth($pos, 2)/2
+      +background-size(ceil(image-width(sprite-path($sprites2x)) / 2), auto)
+
+///// Helpers /////
+
+=antialiased()
+  -webkit-font-smoothing: antialiased
+
+=background-opacity($color, $opacity: 0.3)
+  background-color: $color // The Fallback
+  background-color: rgba($color, $opacity)
+
+=opacity($val)
+  opacity: $val
+  -moz-opacity: $val
+  filter: alpha(opacity=$val)
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=#{round($val * 100)})"
+
+// Placeholder Color Override
+=placeholder-color($color)
+  &::-webkit-input-placeholder
+    color: $color
+  &:-moz-placeholder
+    color: $color
+  &::-moz-placeholder
+    color: $color
+  &:-ms-input-placeholder
+    color: $color
+
+=transition($prop, $time, $func)
+  +transition-property($prop)
+  +transition-duration($time)
+  +transition-timing-function($func)
+
+=backface-visibility()
+  -webkit-backface-visibility: hidden
+  -moz-backface-visibility:    hidden
+  -ms-backface-visibility:     hidden

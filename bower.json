@@ -1,0 +1,9 @@
+{
+  "name": "foundation-compass-app",
+  "version": "0.0.1",
+  "private": "true",
+  "dependencies": {
+    "foundation": "zurb/bower-foundation",
+    "rem-unit-polyfill": "~1.2.0"
+  }
+}
